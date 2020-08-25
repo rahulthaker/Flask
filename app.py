@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
@@ -14,7 +15,7 @@ app.config['DEBUG'] = True
 app.config['JWT_AUTH_URL_RULE']='/login'  #do this before creating the JWT instance or it wont affect
 app.config['JWT_EXPIRATION_DELTA']=timedelta(seconds=1800)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
-app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///data.db'  #can use other databases as well
+app.config['SQLALCHEMY_DATABASE_URI']=os.environ.get('DATABASE_URL','sqlite:///data.db')  #can use other databases as well
 #app.config['JWT_AUTH_USERNAME_KEY']='email'
 
 api=Api(app)
