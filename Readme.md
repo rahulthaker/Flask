@@ -9,4 +9,4 @@ a JWT.
 
 PostGRESQL is used as a database along with SQLAlchemy for interaction.
 
- ## <b> The app is Deployed using Heroku 
+ ## <a href="https://rest-apiflask.herokuapp.com/"> The app is Deployed using Heroku </a>
