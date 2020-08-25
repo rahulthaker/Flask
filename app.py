@@ -9,14 +9,15 @@ from resources.store import Store,StoreList
 
 app=Flask(__name__)
 app.secret_key='Rahul'
-api=Api(app)
 
+app.config['DEBUG'] = True
 app.config['JWT_AUTH_URL_RULE']='/login'  #do this before creating the JWT instance or it wont affect
 app.config['JWT_EXPIRATION_DELTA']=timedelta(seconds=1800)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///data.db'  #can use other databases as well
 #app.config['JWT_AUTH_USERNAME_KEY']='email'
 
+api=Api(app)
 
 jwt=JWT(app, authenticate ,identity)
 
@@ -29,5 +30,8 @@ api.add_resource(StoreList,'/Store')
 
 if __name__=='__main__':
     from db import db
-    db.init_app(app)
+    if app.config['DEBUG']:
+        @app.before_first_request
+        def create_tables():
+            db.create_all()
     app.run(port=5000, debug=True)
