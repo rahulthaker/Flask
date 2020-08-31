@@ -3,8 +3,8 @@ from db import db
 class ItemModel(db.Model):
     __tablename__="items"
 
-    #id=db.Column(db.Integer,primary_key=True)
-    name=db.Column(db.String(80),primary_key=True)
+    id=db.Column(db.Integer,primary_key=True)
+    name=db.Column(db.String(80))
     price=db.Column(db.Float(precision=2))
 
     store_id=db.Column(db.Integer,db.ForeignKey('stores.id'))
@@ -16,11 +16,16 @@ class ItemModel(db.Model):
         self.store_id=store_id
 
     def json(self):
-        return {'name':self.name,'price':self.price,'store_id':self.store_id}
+        return {'name':self.name,'price':self.price,'store_id':self.store_id,
+                'id':self.id}
 
     @classmethod
     def find_by_name(cls,name):   #This method is actually being used for creating item objects with the name
         return ItemModel.query.filter_by(name=name).first()
+
+    @classmethod
+    def find_all(cls):
+        return cls.query.all()
 
     def save_to_db(self):
         db.session.add(self)
